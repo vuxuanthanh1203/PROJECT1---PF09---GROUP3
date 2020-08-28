@@ -2,7 +2,7 @@ package group3.persistance;
 
 import java.util.Scanner;
 
-public class Customer {
+public class User {
     private String email;
     private String pass;
     private String name;

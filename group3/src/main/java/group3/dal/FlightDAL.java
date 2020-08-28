@@ -24,6 +24,7 @@ public class FlightDAL {
 
     public void displayFlight() {
         try {
+            App.header();
             String sql = "SELECT flight_id, flight_no, flight_date, flight_time, starting_point, destination, takeoff_time, landing_time FROM flights";
             connection = getConnection();
             pstmt = connection.prepareStatement(sql);
@@ -57,9 +58,10 @@ public class FlightDAL {
 
     public void search() {
         try {
-            System.out.println("\n===========================================");
-            System.out.println("|              SEARCH FLIGHT              |");
-            System.out.println("+-----------------------------------------+");
+            App.header();
+            System.out.println("\n=====================================================================");
+            System.out.println("|                           SEARCH FLIGHT                           |");
+            System.out.println("+-------------------------------------------------------------------+\n");
             System.out.print("\n- Input Starting Point: ");
             start = getScanner().nextLine();
             System.out.print("\n- Input Destination: ");
@@ -101,7 +103,7 @@ public class FlightDAL {
 
     public void chooseFlight() {
         if (start.equals("") && end.equals("")) {
-            if (!CustomerDAL.isLogin) {
+            if (!UserDAL.isLogin) {
                 App.menu1();
             } else {
                 App.cusScreen();
@@ -115,18 +117,19 @@ public class FlightDAL {
                 System.out.println("\n");
                 switch (choice) {
                     case "y":
-                        if (!CustomerDAL.isLogin) {
+                        if (!UserDAL.isLogin) {
+                            System.out.println("isLogin: " + UserDAL.isLogin);
                             System.out.println("-- YOU NEED TO LOGIN TO USE THIS FUNCTION !!! --\n");
                             while (true) {
                                 System.out.println("\n Do you want to login to continue ? (Y/N)");
                                 continueOrNot = getScanner().nextLine().toLowerCase();
                                 switch (continueOrNot) {
                                     case "y":
-                                        CustomerDAL.Cuslogin();
+                                        UserDAL.login();
                                         BookingDAL.booking();
                                         break;
                                     case "n":
-                                        App.cusScreen();
+                                        App.menu1();
                                     default:
                                         System.out.println("Function does not exist !");
                                         break;
@@ -138,7 +141,7 @@ public class FlightDAL {
                         }
                         break;
                     case "n":
-                        if (!CustomerDAL.isLogin) {
+                        if (!UserDAL.isLogin) {
                             App.menu1();
                         } else {
                             App.cusScreen();
@@ -153,10 +156,11 @@ public class FlightDAL {
 
     public void insertFlight(Flight flight) {
         try {
+            App.header();
             String f_no = null;
-            System.out.println("===========================================");
-            System.out.println("|               ADD NEW FLIGHT            |");
-            System.out.println("+-----------------------------------------+\n");
+            System.out.println("=====================================================================");
+            System.out.println("|                            ADD NEW FLIGHT                         |");
+            System.out.println("+-------------------------------------------------------------------+\n");
             
             String flight_no = flight.getFlight_no().toUpperCase();
             String flight_date = flight.getFlight_date();
@@ -171,12 +175,12 @@ public class FlightDAL {
             pstmt = connection.prepareStatement(sql1);
             rs = pstmt.executeQuery();
             while (rs.next()) {
-                f_no = rs.getString("cus_email");
+                f_no = rs.getString("user_email");
             }
             if (flight_no.equalsIgnoreCase(f_no)) {
                 System.out.println("\n-- Flight Already Exists !!! --\n");
             } else {
-                String sql = "INSERT INTO flights(flight_no, flight_date, flight_time, starting_point, destination, takeoff_time, landing_time, ad_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+                String sql = "INSERT INTO flights(flight_no, flight_date, flight_time, starting_point, destination, takeoff_time, landing_time, user_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
                 connection = getConnection();
                 pstmt = connection.prepareStatement(sql);
                 pstmt.setString(1, flight_no);
@@ -186,7 +190,7 @@ public class FlightDAL {
                 pstmt.setString(5, destination);
                 pstmt.setString(6, takeoff_time);
                 pstmt.setString(7, landing_time);
-                pstmt.setInt(8, AdminDAL.ad_id);
+                pstmt.setInt(8, UserDAL.user_id);
                 int k = pstmt.executeUpdate();
                 if (k == 1) {
                     System.out.println("\n-- Insert Successful ! --\n");
@@ -201,37 +205,9 @@ public class FlightDAL {
         }
     }
 
-
-    public void Flight(Flight flight) {
-        try {
-            System.out.println("===========================================");
-            System.out.println("|               ADD NEW FLIGHT            |");
-            System.out.println("+-----------------------------------------+\n");
-            String sql = "INSERT INTO flights(flight_no, flight_date, flight_time, starting_point, destination, takeoff_time, landing_time, ad_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-            connection = getConnection();
-            pstmt = connection.prepareStatement(sql);
-            pstmt.setString(1, );
-            pstmt.setString(2, 
-            pstmt.setString(3, );
-            pstmt.setString(4, );
-            pstmt.setString(5, );
-            pstmt.setString(6, );
-            pstmt.setString(7, );
-            int k = pstmt.executeUpdate();
-            if (k == 1) {
-                System.out.println("\n-- Insert Successful ! --\n");
-            } else {
-                System.out.println("\n-- Insert Failed !!! --\n");
-            }
-        } catch (SQLException e) {
-            System.out.println("SQLException: " + e.getMessage());
-            System.out.println("SQLState: " + e.getSQLState());
-            System.out.println("VendorError: " + e.getErrorCode());
-        }
-    }
-
     public void updateFlight(Flight flight) {
         try {
+            App.header();
             System.out.print("\n- Input Flight Number: ");
             String flight_no = getScanner().nextLine();
             String sql1 = "CALL search_flight('" + flight_no + "')";
@@ -258,9 +234,9 @@ public class FlightDAL {
                 line();
             }
             line();
-            System.out.println("\n===========================================");
-            System.out.println("|              UPDATE FLIGHT              |");
-            System.out.println("+-----------------------------------------+\n");
+            System.out.println("\n=====================================================================");
+            System.out.println("|                             UPDATE FLIGHT                         |");
+            System.out.println("+-------------------------------------------------------------------+\n");
             String sql2 = "UPDATE flights SET flight_date = ?, takeoff_time = ?, landing_time = ? WHERE flight_no = '" + flight_no
                     + "'";
             connection = getConnection();
@@ -285,9 +261,10 @@ public class FlightDAL {
     public void delFlight() {
         String fid = null;
         try {
-            System.out.println("\n===========================================");
-            System.out.println("|              DELETE FLIGHT              |");
-            System.out.println("+-----------------------------------------+");
+            App.header();
+            System.out.println("\n=====================================================================");
+            System.out.println("|                             DELETE FLIGHT                         |");
+            System.out.println("+-------------------------------------------------------------------+\n");
             System.out.print("\n- Input Flight Number: ");
             String flight_no = getScanner().nextLine();
             String sql = "CALL search_flight('" + flight_no + "')";
@@ -315,8 +292,6 @@ public class FlightDAL {
                 line();
             }
             line();
-            // System.out.println(flight_no);
-            // System.out.println(rs.getString("flight_no"));
             if (!flight_no.equalsIgnoreCase(fid)) {
                 System.out.println("\n-- Flight Doesn't exist ! --");
             } else {

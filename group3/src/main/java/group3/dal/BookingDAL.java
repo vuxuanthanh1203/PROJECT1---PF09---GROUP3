@@ -33,9 +33,10 @@ public class BookingDAL {
         int tID = 0;
         try {
             do {
-                System.out.println("\n===========================================");
-                System.out.println("|             BOOKING TICKET              |");
-                System.out.println("+-----------------------------------------+");
+                App.header();
+                System.out.println("\n=====================================================================");
+                System.out.println("|                          BOOKING TICKET                           |");
+                System.out.println("+-------------------------------------------------------------------+\n");
                 System.out.print("\n- Enter Flight Number: ");
                 flight = getScanner().nextLine();
                 String sql1 = "SELECT * FROM flights WHERE flight_no = '" + flight + "'";
@@ -79,12 +80,12 @@ public class BookingDAL {
                                 Date dateobj = new Date();
                                 switch (choice) {
                                     case "y":
-                                        String sql3 = "INSERT INTO booking(flight_id, type_id, cus_id, booking_date, quantity, total_price) VALUES (?, ?, ?, ?, ?, ?)";
+                                        String sql3 = "INSERT INTO booking(flight_id, type_id, user_id, booking_date, quantity, total_price) VALUES (?, ?, ?, ?, ?, ?)";
                                         connection = getConnection();
                                         pstmt = connection.prepareStatement(sql3);
                                         pstmt.setInt(1, fId);
                                         pstmt.setInt(2, tID);
-                                        pstmt.setInt(3, CustomerDAL.user_id);
+                                        pstmt.setInt(3, UserDAL.user_id);
                                         pstmt.setString(4, df.format(dateobj));
                                         pstmt.setInt(5, quantity);
                                         pstmt.setInt(6, totalPrice);
@@ -118,7 +119,8 @@ public class BookingDAL {
 
     public void viewTicket() {
         try {
-            String sql = "CALL view_ticket('" + CustomerDAL.user_id + "')";
+            App.header();
+            String sql = "CALL view_ticket('" + UserDAL.user_id + "')";
             connection = getConnection();
             pstmt = connection.prepareStatement(sql);
             rs = pstmt.executeQuery();
@@ -132,10 +134,10 @@ public class BookingDAL {
                 System.out.print("\n- Ticket ID: " + rs.getInt("booking_id"));
                 System.out.println("\t\t\t\t\t\t\t- Flight Number: " + rs.getString("flight_no"));
                 System.out.print("\n- Flight Time: " + rs.getString("flight_time"));
-                System.out.println("\t\t\t\t\t\t- Full Name: " + rs.getString("cus_name"));
+                System.out.println("\t\t\t\t\t\t- Full Name: " + rs.getString("user_name"));
                 System.out.print("\n- Takeoff Time: " + rs.getString("takeoff_time"));
                 System.out.print("  - Landing Time: " + rs.getString("landing_time"));
-                System.out.println("\t\t- Address: " + rs.getString("cus_address"));
+                System.out.println("\t\t- Address: " + rs.getString("user_address"));
                 System.out.print("\n- Flight Date: " + rs.getString("flight_date"));
                 System.out.println("\t\t\t\t\t- Ticket Type: " + rs.getString("type_name"));
                 System.out.print("\n- Start Point: " + rs.getString("starting_point"));
@@ -155,12 +157,13 @@ public class BookingDAL {
         int ticket = 0;
         // String choice;
         try {
-            System.out.println("\n===========================================");
-            System.out.println("|              CANCEL TICKET              |");
-            System.out.println("+-----------------------------------------+");
+            App.header();
+            System.out.println("\n=====================================================================");
+            System.out.println("|                             CANCEL TICKET                         |");
+            System.out.println("+-------------------------------------------------------------------+\n");
             System.out.print("- Enter Ticket ID: ");
             ticket = getScanner().nextInt();
-            String sql = "CALL view_ticketID('" + CustomerDAL.user_id + "','" + ticket + "')";
+            String sql = "CALL view_ticketID('" + UserDAL.user_id + "','" + ticket + "')";
             connection = getConnection();
             pstmt = connection.prepareStatement(sql);
             rs = pstmt.executeQuery();
@@ -176,10 +179,10 @@ public class BookingDAL {
                 System.out.print("\n- Ticket ID: " + ticketID);
                 System.out.println("\t\t\t\t\t\t\t- Flight Number: " + rs.getString("flight_no"));
                 System.out.print("\n- Flight Time: " + rs.getString("flight_time"));
-                System.out.println("\t\t\t\t\t\t- Full Name: " + rs.getString("cus_name"));
+                System.out.println("\t\t\t\t\t\t- Full Name: " + rs.getString("user_name"));
                 System.out.print("\n- Takeoff Time: " + rs.getString("takeoff_time"));
                 System.out.print("  - Landing Time: " + rs.getString("landing_time"));
-                System.out.println("\t\t- Address: " + rs.getString("cus_address"));
+                System.out.println("\t\t- Address: " + rs.getString("user_address"));
                 System.out.print("\n- Flight Date: " + rs.getString("flight_date"));
                 System.out.println("\t\t\t\t\t- Ticket Type: " + rs.getString("type_name"));
                 System.out.print("\n- Start Point: " + rs.getString("starting_point"));
