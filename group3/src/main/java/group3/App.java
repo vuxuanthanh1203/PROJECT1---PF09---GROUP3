@@ -5,7 +5,6 @@ import java.util.Scanner;
 import group3.bl.BookingBL;
 import group3.bl.FlightBL;
 import group3.bl.UserBL;
-// import group3.dal.UserDAL;
 import group3.persistance.Flight;
 import group3.persistance.User;
 
@@ -21,10 +20,14 @@ public class App {
             header();
             System.out.println("=====================================================================");
             System.out.println("|                                MENU                               |");
-            System.out.println("+-------------------------------------------------------------------+\n");
-            System.out.println("| 1. Register                                                       |\n");
-            System.out.println("| 2. Search & View Flight                                           |\n");
-            System.out.println("| 3. Exit                                                           |\n");
+            System.out.println("+-------------------------------------------------------------------+");
+            System.out.println("|                                                                   |");
+            System.out.println("| 1. Register                                                       |");
+            System.out.println("|                                                                   |");
+            System.out.println("| 2. Search & View Flight                                           |");
+            System.out.println("|                                                                   |");
+            System.out.println("| 3. Exit                                                           |");
+            System.out.println("|                                                                   |");
             System.out.println("+-------------------------------------------------------------------+\n");
 
             System.out.print("Choice your action: ");
@@ -59,12 +62,18 @@ public class App {
             header();
             System.out.println("\n\n=====================================================================");
             System.out.println("|                                MENU                               |");
-            System.out.println("+-------------------------------------------------------------------+\n");
-            System.out.println("| 1. Update Account                                                 |\n");
-            System.out.println("| 2. Search & View Flight                                           |\n");
-            System.out.println("| 3. Book Ticket                                                    |\n");
-            System.out.println("| 4. Manage Ticket                                                  |\n");
-            System.out.println("| 5. Logout                                                         |\n");
+            System.out.println("+-------------------------------------------------------------------+");
+            System.out.println("|                                                                   |");
+            System.out.println("| 1. Update Account                                                 |");
+            System.out.println("|                                                                   |");
+            System.out.println("| 2. Search & View Flight                                           |");
+            System.out.println("|                                                                   |");
+            System.out.println("| 3. Book Ticket                                                    |");
+            System.out.println("|                                                                   |");
+            System.out.println("| 4. Manage Ticket                                                  |");
+            System.out.println("|                                                                   |");
+            System.out.println("| 5. Logout                                                         |");
+            System.out.println("|                                                                   |");
             System.out.println("+-------------------------------------------------------------------+\n");
 
             System.out.print("Choice your action: ");
@@ -106,10 +115,14 @@ public class App {
             header();
             System.out.println("\n\n=====================================================================");
             System.out.println("|                             MANAGE TICKET                         |");
-            System.out.println("+-------------------------------------------------------------------+\n");
-            System.out.println("| 1. View Ticket                                                    |\n");
-            System.out.println("| 2. Cancel Ticket                                                  |\n");
-            System.out.println("| 3. Back                                                           |\n");
+            System.out.println("+-------------------------------------------------------------------+");
+            System.out.println("|                                                                   |");
+            System.out.println("| 1. View Ticket                                                    |");
+            System.out.println("|                                                                   |");
+            System.out.println("| 2. Cancel Ticket                                                  |");
+            System.out.println("|                                                                   |");
+            System.out.println("| 3. Back                                                           |");
+            System.out.println("|                                                                   |");
             System.out.println("+-------------------------------------------------------------------+\n");
 
             System.out.print("Choice your action: ");
@@ -139,15 +152,18 @@ public class App {
             header();
             System.out.println("=====================================================================");
             System.out.println("|                                 MENU                              |");
-            System.out.println("+-------------------------------------------------------------------+\n");
-            System.out.println("| 1. Login                                                          |\n");
-            System.out.println("| 2. Continue As Guest                                              |\n");
-            System.out.println("| 3. Exit                                                           |\n");
+            System.out.println("+-------------------------------------------------------------------+");
+            System.out.println("|                                                                   |");
+            System.out.println("| 1. Login                                                          |");
+            System.out.println("|                                                                   |");
+            System.out.println("| 2. Continue As Guest                                              |");
+            System.out.println("|                                                                   |");
+            System.out.println("| 3. Exit                                                           |");
+            System.out.println("|                                                                   |");
             System.out.println("+-------------------------------------------------------------------+\n");
 
             System.out.print("Choice your action: ");
             choice = getScanner().nextInt();
-            // UserDAL 
             switch (choice) {
                 case 1:
                     UserBL.login();
@@ -171,10 +187,14 @@ public class App {
             header();
             System.out.println("\n\n=====================================================================");
             System.out.println("|                                 MENU                              |");
-            System.out.println("+-------------------------------------------------------------------+\n");
-            System.out.println("| 1. Update Account                                                 |\n");
-            System.out.println("| 2. Manage Flight                                                  |\n");
-            System.out.println("| 3. Logout                                                         |\n");
+            System.out.println("+-------------------------------------------------------------------+");
+            System.out.println("|                                                                   |");
+            System.out.println("| 1. Update Account                                                 |");
+            System.out.println("|                                                                   |");
+            System.out.println("| 2. Manage Flight                                                  |");
+            System.out.println("|                                                                   |");
+            System.out.println("| 3. Logout                                                         |");
+            System.out.println("|                                                                   |");
             System.out.println("+-------------------------------------------------------------------+\n");
 
             System.out.print("Choice your action: ");
@@ -206,12 +226,18 @@ public class App {
             header();
             System.out.println("\n\n=====================================================================");
             System.out.println("|                             MANAGE FLIGHT                         |");
-            System.out.println("+-------------------------------------------------------------------+\n");
-            System.out.println("| 1. Add New Flight                                                 |\n");
-            System.out.println("| 2. Update Flight                                                  |\n");
-            System.out.println("| 3. Delete Flight                                                  |\n");
-            System.out.println("| 4. List Flight                                                    |\n");
-            System.out.println("| 5. Back                                                           |\n");
+            System.out.println("+-------------------------------------------------------------------+");
+            System.out.println("|                                                                   |");
+            System.out.println("| 1. Add New Flight                                                 |");
+            System.out.println("|                                                                   |");
+            System.out.println("| 2. Update Flight                                                  |");
+            System.out.println("|                                                                   |");
+            System.out.println("| 3. Delete Flight                                                  |");
+            System.out.println("|                                                                   |");
+            System.out.println("| 4. List Flight                                                    |");
+            System.out.println("|                                                                   |");
+            System.out.println("| 5. Back                                                           |");
+            System.out.println("|                                                                   |");
             System.out.println("+-------------------------------------------------------------------+\n");
 
             System.out.print("Choice your action: ");

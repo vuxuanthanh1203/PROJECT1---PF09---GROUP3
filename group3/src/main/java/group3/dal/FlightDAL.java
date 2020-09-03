@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Scanner;
+import java.util.regex.Pattern;
 
 import group3.App;
 import group3.persistance.Flight;
@@ -25,7 +26,7 @@ public class FlightDAL {
     public void displayFlight() {
         try {
             App.header();
-            String sql = "SELECT flight_id, flight_no, flight_date, flight_time, starting_point, destination, takeoff_time, landing_time FROM flights";
+            String sql = "SELECT flight_id, flight_no, flight_date, flight_time, starting_point, destination, takeoff_time, landing_time FROM flights LIMIT 10";
             connection = getConnection();
             pstmt = connection.prepareStatement(sql);
             rs = pstmt.executeQuery();
@@ -62,13 +63,22 @@ public class FlightDAL {
             System.out.println("\n=====================================================================");
             System.out.println("|                           SEARCH FLIGHT                           |");
             System.out.println("+-------------------------------------------------------------------+\n");
+            // while (true) {
+
             System.out.print("\n- Input Starting Point: ");
             start = getScanner().nextLine();
             System.out.print("\n- Input Destination: ");
             end = getScanner().nextLine();
-            if (start.equals("") && end.equals("")) {
+            if (start.isEmpty() && end.isEmpty()) {
                 System.out.println("\n-- No matching results --\n");
-            } else {
+            }
+            // else if (start.equalsIgnoreCase("ha noi") || start.equalsIgnoreCase("da
+            // nang")
+            // || start.equalsIgnoreCase("ho chi minh") || end.equalsIgnoreCase("ha noi")
+            // || end.equalsIgnoreCase("da nang") || end.equalsIgnoreCase("ho chi minh")) {
+            // System.out.println("\n-- No matching results --\n");
+            // }
+            else {
                 String sql = "CALL search('" + start + "','" + end + "')";
                 connection = getConnection();
                 pstmt = connection.prepareStatement(sql);
@@ -94,6 +104,8 @@ public class FlightDAL {
                 }
                 line();
             }
+            // }
+
         } catch (SQLException e) {
             System.out.println("SQLException: " + e.getMessage());
             System.out.println("SQLState: " + e.getSQLState());
@@ -161,7 +173,7 @@ public class FlightDAL {
             System.out.println("=====================================================================");
             System.out.println("|                            ADD NEW FLIGHT                         |");
             System.out.println("+-------------------------------------------------------------------+\n");
-            
+
             String flight_no = flight.getFlight_no().toUpperCase();
             String flight_date = flight.getFlight_date();
             String flight_time = flight.getFlight_time();
@@ -169,35 +181,47 @@ public class FlightDAL {
             String destination = flight.getDestination().toUpperCase();
             String takeoff_time = flight.getTakeoff_time();
             String landing_time = flight.getLanding_time();
-
-            String sql1 = "SELECT * FROM flights WHERE flight_no = '" + flight_no + "'";
-            connection = getConnection();
-            pstmt = connection.prepareStatement(sql1);
-            rs = pstmt.executeQuery();
-            while (rs.next()) {
-                f_no = rs.getString("user_email");
-            }
-            if (flight_no.equalsIgnoreCase(f_no)) {
-                System.out.println("\n-- Flight Already Exists !!! --\n");
-            } else {
-                String sql = "INSERT INTO flights(flight_no, flight_date, flight_time, starting_point, destination, takeoff_time, landing_time, user_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-                connection = getConnection();
-                pstmt = connection.prepareStatement(sql);
-                pstmt.setString(1, flight_no);
-                pstmt.setString(2, flight_date);
-                pstmt.setString(3, flight_time);
-                pstmt.setString(4, starting_point);
-                pstmt.setString(5, destination);
-                pstmt.setString(6, takeoff_time);
-                pstmt.setString(7, landing_time);
-                pstmt.setInt(8, UserDAL.user_id);
-                int k = pstmt.executeUpdate();
-                if (k == 1) {
-                    System.out.println("\n-- Insert Successful ! --\n");
+            // while (true) {
+                if (flight_no.isEmpty() || flight_date.isEmpty() || flight_time.isEmpty() || starting_point.isEmpty()
+                        || destination.isEmpty() || takeoff_time.isEmpty() || landing_time.isEmpty()) {
+                    System.out.println("\n-- Enter Full Info !!! --\n");
+                } else if (!isDateValid(flight_date)) {
+                    System.out.println("\n-- Invalid Date !!! --\n");
+                    System.out.println("\nDate format: yyyy/mm/dd");
+                } else if (!isTimeValid(flight_time) || !isTimeValid(takeoff_time) || !isTimeValid(landing_time)) {
+                    System.out.println("\n-- Invalid Time !!! --\n");
+                    System.out.println("\nDate format: hh:mm:ss");
                 } else {
-                    System.out.println("\n-- Insert Failed !!! --\n");
+                    String sql1 = "SELECT * FROM flights WHERE flight_no = '" + flight_no + "'";
+                    connection = getConnection();
+                    pstmt = connection.prepareStatement(sql1);
+                    rs = pstmt.executeQuery();
+                    while (rs.next()) {
+                        f_no = rs.getString("user_email");
+                    }
+                    if (flight_no.equalsIgnoreCase(f_no)) {
+                        System.out.println("\n-- Flight Already Exists !!! --\n");
+                    } else {
+                        String sql = "INSERT INTO flights(flight_no, flight_date, flight_time, starting_point, destination, takeoff_time, landing_time, user_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+                        connection = getConnection();
+                        pstmt = connection.prepareStatement(sql);
+                        pstmt.setString(1, flight_no);
+                        pstmt.setString(2, flight_date);
+                        pstmt.setString(3, flight_time);
+                        pstmt.setString(4, starting_point);
+                        pstmt.setString(5, destination);
+                        pstmt.setString(6, takeoff_time);
+                        pstmt.setString(7, landing_time);
+                        pstmt.setInt(8, UserDAL.user_id);
+                        int k = pstmt.executeUpdate();
+                        if (k == 1) {
+                            System.out.println("\n-- Insert Successful ! --\n");
+                        } else {
+                            System.out.println("\n-- Insert Failed !!! --\n");
+                        }
+                    }
                 }
-            }
+            // }
         } catch (SQLException e) {
             System.out.println("SQLException: " + e.getMessage());
             System.out.println("SQLState: " + e.getSQLState());
@@ -237,19 +261,34 @@ public class FlightDAL {
             System.out.println("\n=====================================================================");
             System.out.println("|                             UPDATE FLIGHT                         |");
             System.out.println("+-------------------------------------------------------------------+\n");
-            String sql2 = "UPDATE flights SET flight_date = ?, takeoff_time = ?, landing_time = ? WHERE flight_no = '" + flight_no
-                    + "'";
-            connection = getConnection();
-            pstmt = connection.prepareStatement(sql2);
-            pstmt.setString(1, flight.getFlight_date());
-            pstmt.setString(2, flight.getTakeoff_time());
-            pstmt.setString(3, flight.getLanding_time());
-            int k = pstmt.executeUpdate();
-            if (k == 1) {
-                System.out.println("\n-- Update Successful ! --\n");
-            } else {
-                System.out.println("\n-- Update Failed !!! --\n");
-            }
+            // while (true) {
+                String flight_date = flight.getFlight_date();
+                String takeoff_time = flight.getTakeoff_time();
+                String landing_time = flight.getLanding_time();
+                if (flight_date.isEmpty() || takeoff_time.isEmpty() || landing_time.isEmpty()) {
+                    System.out.println("\n-- Enter Full Info !!! --\n");
+                } else if (!isDateValid(flight_date)) {
+                    System.out.println("\n-- Invalid Date !!! --\n");
+                    System.out.println("\nDate format: yyyy/mm/dd");
+                } else if (!isTimeValid(takeoff_time) || !isTimeValid(landing_time)) {
+                    System.out.println("\n-- Invalid Time !!! --\n");
+                    System.out.println("\nDate format: hh:mm:ss");
+                } else {
+                    String sql2 = "UPDATE flights SET flight_date = ?, takeoff_time = ?, landing_time = ? WHERE flight_no = '"
+                            + flight_no + "'";
+                    connection = getConnection();
+                    pstmt = connection.prepareStatement(sql2);
+                    pstmt.setString(1, flight_date);
+                    pstmt.setString(2, takeoff_time);
+                    pstmt.setString(3, landing_time);
+                }
+                int k = pstmt.executeUpdate();
+                if (k == 1) {
+                    System.out.println("\n-- Update Successful ! --\n");
+                } else {
+                    System.out.println("\n-- Update Failed !!! --\n");
+                }
+            // }
         } catch (SQLException e) {
             System.out.println("SQLException: " + e.getMessage());
             System.out.println("SQLState: " + e.getSQLState());
@@ -286,9 +325,9 @@ public class FlightDAL {
                     "================================================================================================================================================");
             while (rs.next()) {
                 fid = rs.getString("flight_no");
-                System.out.printf("\n %13s %20s %18s %21s %20s %18s %20s \n", fid,
-                        rs.getString("flight_date"), rs.getString("flight_time"), rs.getString("starting_point"),
-                        rs.getString("destination"), rs.getString("takeoff_time"), rs.getString("landing_time"));
+                System.out.printf("\n %13s %20s %18s %21s %20s %18s %20s \n", fid, rs.getString("flight_date"),
+                        rs.getString("flight_time"), rs.getString("starting_point"), rs.getString("destination"),
+                        rs.getString("takeoff_time"), rs.getString("landing_time"));
                 line();
             }
             line();
@@ -317,7 +356,7 @@ public class FlightDAL {
                         break;
                 }
             }
-        // }
+            // }
         } catch (SQLException e) {
             System.out.println("SQLException: " + e.getMessage());
             System.out.println("SQLState: " + e.getSQLState());
@@ -328,6 +367,16 @@ public class FlightDAL {
     public void line() {
         System.out.println(
                 "------------------------------------------------------------------------------------------------------------------------------------------------");
+    }
+
+    public static boolean isDateValid(String date) {
+        Pattern DATE_PATTERN = Pattern.compile("^\\d{4}-\\d{2}-\\d{2}$");
+        return DATE_PATTERN.matcher(date).matches();
+    }
+
+    public static boolean isTimeValid(String time) {
+        Pattern TIME24HOURS_PATTERN = Pattern.compile("([01]?[0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]");
+        return TIME24HOURS_PATTERN.matcher(time).matches();
     }
 
     public Scanner getScanner() {
