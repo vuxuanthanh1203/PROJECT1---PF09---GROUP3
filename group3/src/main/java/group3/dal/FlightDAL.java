@@ -17,6 +17,8 @@ public class FlightDAL {
 
     private static String start = "";
     private static String end = "";
+    private static String s_point;
+    private static String des;
 
     private static Connection getConnection() throws SQLException {
         Connection conn = DbUtil.getInstance().getConnection();
@@ -26,7 +28,7 @@ public class FlightDAL {
     public void displayFlight() {
         try {
             App.header();
-            String sql = "SELECT flight_id, flight_no, flight_date, flight_time, starting_point, destination, takeoff_time, landing_time FROM flights LIMIT 10";
+            String sql = "SELECT flight_id, flight_no, flight_date, flight_time, starting_point, destination, takeoff_time, landing_time FROM flights ORDER BY(takeoff_time) ASC LIMIT 10";
             connection = getConnection();
             pstmt = connection.prepareStatement(sql);
             rs = pstmt.executeQuery();
@@ -69,14 +71,17 @@ public class FlightDAL {
             start = getScanner().nextLine();
             System.out.print("\n- Input Destination: ");
             end = getScanner().nextLine();
-            if (start.isEmpty() && end.isEmpty()) {
+            if ((start.isEmpty() && end.isEmpty())) {
                 System.out.println("\n-- No matching results --\n");
             }
-            else if (!start.equalsIgnoreCase("ha noi") || !start.equalsIgnoreCase("da nang")
-            || !start.equalsIgnoreCase("ho chi minh") || !end.equalsIgnoreCase("ha noi")
-            || !end.equalsIgnoreCase("da nang") || !end.equalsIgnoreCase("ho chi minh")) {
-                System.out.println("\n-- No matching results --\n");
-            }
+            // else if ((!start.equalsIgnoreCase("ha noi") || !start.equalsIgnoreCase("da
+            // nang")
+            // || !start.equalsIgnoreCase("ho chi minh")) && (!end.equalsIgnoreCase("ha
+            // noi")
+            // || !end.equalsIgnoreCase("da nang") || !end.equalsIgnoreCase("ho chi minh")))
+            // {
+            // System.out.println("\n-- No matching results --\n");
+            // }
             else {
                 String sql = "CALL search('" + start + "','" + end + "')";
                 connection = getConnection();
@@ -96,15 +101,19 @@ public class FlightDAL {
                 System.out.println(
                         "================================================================================================================================================");
                 while (rs.next()) {
+                    s_point = rs.getString("starting_point");
+                    des = rs.getString("destination");
+
                     System.out.printf("\n %13s %20s %18s %20s %20s %19s %20s \n", rs.getString("flight_no"),
-                            rs.getString("flight_date"), rs.getString("flight_time"), rs.getString("starting_point"),
-                            rs.getString("destination"), rs.getString("takeoff_time"), rs.getString("landing_time"));
+                            rs.getString("flight_date"), rs.getString("flight_time"), s_point, des,
+                            rs.getString("takeoff_time"), rs.getString("landing_time"));
                     line();
+                }
+                if (s_point == null || des == null) {
+                    System.out.println("\n-- No matching results --\n");
                 }
                 line();
             }
-            // }
-
         } catch (SQLException e) {
             System.out.println("SQLException: " + e.getMessage());
             System.out.println("SQLState: " + e.getSQLState());
