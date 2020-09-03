@@ -44,7 +44,9 @@ public class UserDAL {
                     email = getScanner().nextLine();
                     System.out.print("\nInput your password: ");
                     pass = getScanner().nextLine();
-                    if (!isEmailValid(email)) {
+                    if (email.isEmpty() || pass.isEmpty()){
+                        System.out.println("\n-- Email or Password is not blank !!! --\n");
+                    } else if (!isEmailValid(email)) {
                         System.out.println("\n-- Invalid email !!! --\n");
                     } else {
                         String sql = "SELECT * FROM users WHERE user_email = '" + email + "' AND user_pass = '" + pass
@@ -150,7 +152,7 @@ public class UserDAL {
             String name = user.getName().toLowerCase();
             String tel = user.getTel().toLowerCase();
             String address = user.getAddress().toLowerCase();
-            while (true) {
+            // while (true) {
                 if (email.isEmpty() || pass.isEmpty() || name.isEmpty() || tel.isEmpty() || address.isEmpty()) {
                     System.out.println("\n-- Enter Full Info !!! --\n");
                 } else if (!isEmailValid(email)) {
@@ -186,7 +188,7 @@ public class UserDAL {
                     }
 
                 }
-            }
+            // }
         } catch (SQLException e) {
             System.out.println("SQLException: " + e.getMessage());
             System.out.println("SQLState: " + e.getSQLState());
