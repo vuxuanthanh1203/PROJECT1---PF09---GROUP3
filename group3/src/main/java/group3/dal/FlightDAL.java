@@ -17,8 +17,8 @@ public class FlightDAL {
 
     private static String start = "";
     private static String end = "";
-    private static String s_point;
-    private static String des;
+    private static String s_point = null;
+    private static String des = null;
 
     private static Connection getConnection() throws SQLException {
         Connection conn = DbUtil.getInstance().getConnection();
@@ -65,24 +65,13 @@ public class FlightDAL {
             System.out.println("\n=====================================================================");
             System.out.println("|                           SEARCH FLIGHT                           |");
             System.out.println("+-------------------------------------------------------------------+\n");
-            // while (true) {
-
             System.out.print("\n- Input Starting Point: ");
             start = getScanner().nextLine();
             System.out.print("\n- Input Destination: ");
             end = getScanner().nextLine();
             if ((start.isEmpty() && end.isEmpty())) {
                 System.out.println("\n-- No matching results --\n");
-            }
-            // else if ((!start.equalsIgnoreCase("ha noi") || !start.equalsIgnoreCase("da
-            // nang")
-            // || !start.equalsIgnoreCase("ho chi minh")) && (!end.equalsIgnoreCase("ha
-            // noi")
-            // || !end.equalsIgnoreCase("da nang") || !end.equalsIgnoreCase("ho chi minh")))
-            // {
-            // System.out.println("\n-- No matching results --\n");
-            // }
-            else {
+            } else {
                 String sql = "CALL search('" + start + "','" + end + "')";
                 connection = getConnection();
                 pstmt = connection.prepareStatement(sql);
@@ -109,8 +98,16 @@ public class FlightDAL {
                             rs.getString("takeoff_time"), rs.getString("landing_time"));
                     line();
                 }
-                if (s_point == null || des == null) {
+                if (s_point == null && des == null) {
                     System.out.println("\n-- No matching results --\n");
+                    s_point = null;
+                    des = null;
+                    line();
+                    if (!UserDAL.isLogin) {
+                        App.menu1();
+                    } else {
+                        App.cusScreen();
+                    }
                 }
                 line();
             }
@@ -138,7 +135,6 @@ public class FlightDAL {
                 switch (choice) {
                     case "y":
                         if (!UserDAL.isLogin) {
-                            // System.out.println("isLogin: " + UserDAL.isLogin);
                             System.out.println("-- YOU NEED TO LOGIN TO USE THIS FUNCTION !!! --\n");
                             while (true) {
                                 System.out.println("\n Do you want to login to continue ? (Y/N)");
@@ -205,7 +201,7 @@ public class FlightDAL {
                 pstmt = connection.prepareStatement(sql1);
                 rs = pstmt.executeQuery();
                 while (rs.next()) {
-                    f_no = rs.getString("user_email");
+                    f_no = rs.getString("flight_no");
                 }
                 if (flight_no.equalsIgnoreCase(f_no)) {
                     System.out.println("\n-- Flight Already Exists !!! --\n");
@@ -378,7 +374,7 @@ public class FlightDAL {
     }
 
     public static boolean isDateValid(String date) {
-        Pattern DATE_PATTERN = Pattern.compile("^\\d{4}-\\d{2}-\\d{2}$");
+        Pattern DATE_PATTERN = Pattern.compile("^\\d{4}(-|/)\\d{2}(-|)/\\d{2}$");
         return DATE_PATTERN.matcher(date).matches();
     }
 
