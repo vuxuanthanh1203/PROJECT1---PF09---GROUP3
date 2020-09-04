@@ -27,8 +27,8 @@ public class BookingDAL {
         String type = null;
         String ticket_Type = null;
         int eachTicket = 0;
-        int quantity;
-        int totalPrice;
+        // int quantity;
+        // int totalPrice;
         int fId = 0;
         int tID = 0;
         try {
@@ -39,74 +39,78 @@ public class BookingDAL {
                 System.out.println("+-------------------------------------------------------------------+\n");
                 System.out.print("\n- Enter Flight Number: ");
                 flight = getScanner().nextLine();
-                String sql1 = "SELECT * FROM flights WHERE flight_no = '" + flight + "'";
-                connection = getConnection();
-                pstmt = connection.prepareStatement(sql1);
-                rs = pstmt.executeQuery();
-                if (rs.next()) {
-                    flight_no = rs.getString("flight_no");
-                    fId = rs.getInt("flight_id");
-                    // System.out.println("flight ID = " + fId);
-                }
-                if (!flight.equalsIgnoreCase(flight_no)) {
-                    System.out.println("-- Flight Doesn't exist ! --");
+                if (flight.isEmpty()) {
+                    System.out.println("\n-- Enter The Flight Number !!! ---\n");
                 } else {
-                    do {
-                        System.out.println("\n(Ticket Type: A = 300k, B = 600K, C = 900K)");
-                        System.out.print("- Enter Ticket Type: ");
-                        type = getScanner().nextLine();
-                        String sql2 = "SELECT * FROM ticketType WHERE type_name = '" + type + "'";
-                        connection = getConnection();
-                        pstmt = connection.prepareStatement(sql2);
-                        rs = pstmt.executeQuery();
-                        if (rs.next()) {
-                            ticket_Type = rs.getString("type_name");
-                            eachTicket = rs.getInt("ticket_price");
-                            tID = rs.getInt("type_id");
-                        }
-                        if (!type.equalsIgnoreCase(ticket_Type)) {
-                            System.out.println("-- Invalid Ticket Type !!!--");
-                        } else {
-                            System.out.print("\n- Enter The Quantity: ");
-                            quantity = getScanner().nextInt();
-                            totalPrice = quantity * eachTicket;
-                            System.out.println("\n- Total Money = " + totalPrice + " VND");
-                            String choice;
-                            while (true) {
-                                System.out.println("\n- Do you want to payment ? (Y/N)");
-                                choice = getScanner().nextLine().toLowerCase();
-                                System.out.println("\n");
-                                DateFormat df = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-                                Date dateobj = new Date();
-                                switch (choice) {
-                                    case "y":
-                                        String sql3 = "INSERT INTO booking(flight_id, type_id, user_id, booking_date, quantity, total_price) VALUES (?, ?, ?, ?, ?, ?)";
-                                        connection = getConnection();
-                                        pstmt = connection.prepareStatement(sql3);
-                                        pstmt.setInt(1, fId);
-                                        pstmt.setInt(2, tID);
-                                        pstmt.setInt(3, UserDAL.user_id);
-                                        pstmt.setString(4, df.format(dateobj));
-                                        pstmt.setInt(5, quantity);
-                                        pstmt.setInt(6, totalPrice);
-                                        int k = pstmt.executeUpdate();
-                                        if (k == 1) {
-                                            System.out.println("\n-- Booking Successful ! --\n");
+                    String sql1 = "SELECT * FROM flights WHERE flight_no = '" + flight + "'";
+                    connection = getConnection();
+                    pstmt = connection.prepareStatement(sql1);
+                    rs = pstmt.executeQuery();
+                    if (rs.next()) {
+                        flight_no = rs.getString("flight_no");
+                        fId = rs.getInt("flight_id");
+                        // System.out.println("flight ID = " + fId);
+                    }
+                    if (!flight.equalsIgnoreCase(flight_no)) {
+                        System.out.println("\n-- Flight Doesn't exist !!! --\n");
+                    } else {
+                        do {
+                            System.out.println("\n(Ticket Type: A = 300k, B = 600K, C = 900K)");
+                            System.out.print("- Enter Ticket Type: ");
+                            type = getScanner().nextLine();
+                            String sql2 = "SELECT * FROM ticketType WHERE type_name = '" + type + "'";
+                            connection = getConnection();
+                            pstmt = connection.prepareStatement(sql2);
+                            rs = pstmt.executeQuery();
+                            if (rs.next()) {
+                                ticket_Type = rs.getString("type_name");
+                                eachTicket = rs.getInt("ticket_price");
+                                tID = rs.getInt("type_id");
+                            }
+                            if (!type.equalsIgnoreCase(ticket_Type)) {
+                                System.out.println("-- Invalid Ticket Type !!!--");
+                            } else {
+                                // System.out.print("\n- Enter The Quantity: ");
+                                // quantity = getScanner().nextInt();
+                                // totalPrice = quantity * eachTicket;
+                                System.out.println("\n- Total Money = " + eachTicket + " VND");
+                                String choice;
+                                while (true) {
+                                    System.out.println("\n- Do you want to payment ? (Y/N)");
+                                    choice = getScanner().nextLine().toLowerCase();
+                                    System.out.println("\n");
+                                    DateFormat df = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+                                    Date dateobj = new Date();
+                                    switch (choice) {
+                                        case "y":
+                                            String sql3 = "INSERT INTO booking(flight_id, type_id, user_id, booking_date, total_price) VALUES (?, ?, ?, ?, ?)";
+                                            connection = getConnection();
+                                            pstmt = connection.prepareStatement(sql3);
+                                            pstmt.setInt(1, fId);
+                                            pstmt.setInt(2, tID);
+                                            pstmt.setInt(3, UserDAL.user_id);
+                                            pstmt.setString(4, df.format(dateobj));
+                                            pstmt.setInt(5, eachTicket);
+                                            // pstmt.setInt(6, totalPrice);
+                                            int k = pstmt.executeUpdate();
+                                            if (k == 1) {
+                                                System.out.println("\n-- Booking Successful ! --\n");
+                                                App.cusScreen();
+                                            } else {
+                                                System.out.println("\n-- Booking Failed !!! --\n");
+                                            }
+                                            break;
+                                        case "n":
                                             App.cusScreen();
-                                        } else {
-                                            System.out.println("\n-- Booking Failed !!! --\n");
-                                        }
-                                        break;
-                                    case "n":
-                                        App.cusScreen();
-                                        break;
-                                    default:
-                                        System.out.println("\n-- Function does not exist ! --\n");
-                                        break;
+                                            break;
+                                        default:
+                                            System.out.println("\n-- Function does not exist ! --\n");
+                                            break;
+                                    }
                                 }
                             }
-                        }
-                    } while (!type.equalsIgnoreCase(ticket_Type));
+                        } while (!type.equalsIgnoreCase(ticket_Type));
+                    }
                 }
             } while (!flight.equalsIgnoreCase(flight_no));
         } catch (SQLException e) {
@@ -129,7 +133,7 @@ public class BookingDAL {
             System.out.println(
                     "|                                                  LIST OF TICKET                                                    |");
             System.out.println(
-                    "======================================================================================================================\n");
+                    "======================================================================================================================");
             while (rs.next()) {
                 System.out.print("\n- Ticket ID: " + rs.getInt("booking_id"));
                 System.out.println("\t\t\t\t\t\t\t- Flight Number: " + rs.getString("flight_no"));
@@ -172,7 +176,7 @@ public class BookingDAL {
             System.out.println(
                     "|                                                    TICKET DETAIL                                                   |");
             System.out.println(
-                    "======================================================================================================================\n");
+                    "======================================================================================================================");
             while (rs.next()) {
                 ticketID = rs.getInt("booking_id");
 
@@ -188,11 +192,10 @@ public class BookingDAL {
                 System.out.print("\n- Start Point: " + rs.getString("starting_point"));
                 System.out.println("  - Destination: " + rs.getString("destination") + "\n");
                 line();
-
             }
             line();
             if (ticket != ticketID) {
-                System.out.println("\n-- Ticket Doesn't exist ! --");
+                System.out.println("\n-- Ticket Doesn't exist ! --\n");
             } else {
                 System.out.println("\n- Do You Really Want To Delete The Ticket ? (Y/N)");
                 String choice = getScanner().nextLine().toLowerCase();

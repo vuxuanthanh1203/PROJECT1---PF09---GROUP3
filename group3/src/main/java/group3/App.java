@@ -11,8 +11,6 @@ import group3.persistance.User;
 public class App {
     public static void main(String[] args) throws Exception {
         menu();
-        // manageFlight();
-
     }
 
     public static void menu1() {
