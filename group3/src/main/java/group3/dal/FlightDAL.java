@@ -19,6 +19,8 @@ public class FlightDAL {
     private static String end = "";
     private static String s_point = null;
     private static String des = null;
+    private String email = null;
+    private String pass = null;
 
     private static Connection getConnection() throws SQLException {
         Connection conn = DbUtil.getInstance().getConnection();
@@ -141,7 +143,7 @@ public class FlightDAL {
                                 continueOrNot = getScanner().nextLine().toLowerCase();
                                 switch (continueOrNot) {
                                     case "y":
-                                        UserDAL.login();
+                                        UserDAL.login(email, pass);
                                         BookingDAL.booking();
                                         break;
                                     case "n":

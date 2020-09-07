@@ -6,8 +6,8 @@ import group3.persistance.User;
 public class UserBL {
     private static UserDAL udal = new UserDAL();
 
-    public static void login() {
-        UserDAL.login();
+    public static boolean login(String email, String pass) {
+        return UserDAL.login(email, pass);
     }
 
     public void addCustomer(User user) {
