@@ -166,9 +166,10 @@ public class App {
 
             System.out.print("Choice your action: ");
             choice = getScanner().nextInt();
+            UserBL ubl = new UserBL();
             switch (choice) {
                 case 1:
-                    UserBL.login(email, pass);
+                    ubl.login(email, pass);
                     break;
                 case 2:
                     menu1();

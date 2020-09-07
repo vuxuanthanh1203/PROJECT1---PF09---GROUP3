@@ -26,7 +26,7 @@ public class UserDAL {
         return conn;
     }
 
-    public static boolean login(String email, String pass) {
+    public boolean login(String email, String pass) {
         String user = null;
         String user_email = null;
         // String email = null;

@@ -8,6 +8,7 @@ import java.util.Scanner;
 import java.util.regex.Pattern;
 
 import group3.App;
+import group3.bl.UserBL;
 import group3.persistance.Flight;
 
 public class FlightDAL {
@@ -143,7 +144,8 @@ public class FlightDAL {
                                 continueOrNot = getScanner().nextLine().toLowerCase();
                                 switch (continueOrNot) {
                                     case "y":
-                                        UserDAL.login(email, pass);
+                                        UserBL ubl = new UserBL();
+                                        ubl.login(email, pass);
                                         BookingDAL.booking();
                                         break;
                                     case "n":

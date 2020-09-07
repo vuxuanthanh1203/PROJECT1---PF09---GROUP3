@@ -57,12 +57,4 @@ public class User {
     public void setAddress(String address) {
         this.address = address;
     }
-
-    // public User(String email, String pass, String name, String tel, String address) {
-    //     this.email = email;
-    //     this.pass = pass;
-    //     this.name = name;
-    //     this.tel = tel;
-    //     this.address = address;
-    // }
 }
