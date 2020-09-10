@@ -1,5 +1,6 @@
 package group3.dal;
 
+import java.io.Console;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -11,6 +12,7 @@ import java.util.Scanner;
 import java.util.regex.Pattern;
 
 import group3.App;
+import group3.persistance.PasswordField;
 import group3.persistance.User;
 
 public class UserDAL {
@@ -31,7 +33,7 @@ public class UserDAL {
         String user_email = null;
         String email = "";
         String user_pass = null;
-        String password = "";
+        String password;
         int roll = 0;
         try {
             do {
@@ -41,11 +43,8 @@ public class UserDAL {
                 System.out.println("+-------------------------------------------------------------------+\n");
                 while (true) {
                     System.out.print("Input your email (email@domain.com): ");
-                    email = user.getEmail();
-                    // = getScanner().nextLine().toLowerCase();
-                    System.out.print("\nInput your password: ");
-                    password = getMd5(user.getPass());
-                    // = getMd5(getScanner().nextLine());
+                    email = user.getEmail().toLowerCase();
+                    password = getMd5(PasswordField.readPassword("\nInput your password: ")); 
                     if (email.isEmpty() || password.isEmpty()) {
                         System.out.println("\n-- Email or Password is not blank !!! --\n");
                     } else if (!isEmailValid(email)) {
@@ -153,7 +152,7 @@ public class UserDAL {
             System.out.print("\n- Email: ");
             String email = user.getEmail().toLowerCase();
             System.out.print("\n- Password: ");
-            String pass = user.getPass().toLowerCase();
+            String pass = getMd5(PasswordField.readPassword(""));
             System.out.print("\n- Name: ");
             String name = user.getName().toUpperCase();
             System.out.print("\n- Tel: ");
