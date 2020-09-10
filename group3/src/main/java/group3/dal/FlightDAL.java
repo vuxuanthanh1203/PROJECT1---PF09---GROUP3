@@ -10,11 +10,12 @@ import java.util.regex.Pattern;
 import group3.App;
 import group3.bl.UserBL;
 import group3.persistance.Flight;
+import group3.persistance.User;
 
 public class FlightDAL {
-    private Connection connection = null;
-    private PreparedStatement pstmt = null;
-    private ResultSet rs = null;
+    private static Connection connection = null;
+    private static PreparedStatement pstmt = null;
+    private static ResultSet rs = null;
 
     private static String start = "";
     private static String end = "";
@@ -145,7 +146,8 @@ public class FlightDAL {
                                 switch (continueOrNot) {
                                     case "y":
                                         UserBL ubl = new UserBL();
-                                        ubl.login(email, pass);
+                                        User user = new User();
+                                        ubl.login(user);
                                         BookingDAL.booking();
                                         break;
                                     case "n":
@@ -371,6 +373,54 @@ public class FlightDAL {
             System.out.println("VendorError: " + e.getErrorCode());
         }
     }
+
+    public static boolean checkPlace(String start, String des) {
+        boolean result = false;
+        try {
+            String sql = "SELECT starting_point, destination FROM flights WHERE starting_point = '" + start
+                    + "'AND destination = '" + des + "'";
+            connection = getConnection();
+            pstmt = connection.prepareStatement(sql);
+            rs = pstmt.executeQuery();
+            while (rs.next()) {
+                if (start.equalsIgnoreCase(rs.getString("starting_point"))
+                        && des.equalsIgnoreCase(rs.getString("destination"))) {
+                    result = true;
+                } else {
+                    result = false;
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println("SQLException: " + e.getMessage());
+            System.out.println("SQLState: " + e.getSQLState());
+            System.out.println("VendorError: " + e.getErrorCode());
+        }
+        return result;
+    }
+
+    
+    public static boolean checkFlight(String f_no) {
+        boolean result = false;
+        try {
+            String sql = "SELECT flight_no FROM flights WHERE flight_no = '" + f_no + "'";
+            connection = getConnection();
+            pstmt = connection.prepareStatement(sql);
+            rs = pstmt.executeQuery();
+            while (rs.next()) {
+                if (f_no.equalsIgnoreCase(rs.getString("flight_no"))) {
+                    result = true;
+                } else {
+                    result = false;
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println("SQLException: " + e.getMessage());
+            System.out.println("SQLState: " + e.getSQLState());
+            System.out.println("VendorError: " + e.getErrorCode());
+        }
+        return result;
+    }
+
 
     public void line() {
         System.out.println(

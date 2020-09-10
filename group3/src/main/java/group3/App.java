@@ -147,8 +147,6 @@ public class App {
 
     public static void menu() {
         int choice;
-        String email = null;
-        String pass = null;
 
         while (true) {
             header();
@@ -167,9 +165,10 @@ public class App {
             System.out.print("Choice your action: ");
             choice = getScanner().nextInt();
             UserBL ubl = new UserBL();
+            User user = new User();
             switch (choice) {
                 case 1:
-                    ubl.login(email, pass);
+                    ubl.login(user);
                     break;
                 case 2:
                     menu1();

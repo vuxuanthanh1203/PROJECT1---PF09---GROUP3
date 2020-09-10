@@ -16,4 +16,8 @@ public class BookingBL {
     public void cancelTicket() {
         bdal.cancelTicket();
     }
+
+    public boolean checkTicket(String t_no) {
+        return BookingDAL.checkTicket(t_no);
+    }
 }

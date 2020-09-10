@@ -226,6 +226,28 @@ public class BookingDAL {
         }
     }
 
+    public static boolean checkTicket(String t_no) {
+        boolean result = false;
+        try {
+            String sql = "SELECT booking_id FROM booking WHERE booking_id = '" + t_no + "'";
+            connection = getConnection();
+            pstmt = connection.prepareStatement(sql);
+            rs = pstmt.executeQuery();
+            while (rs.next()) {
+                if (t_no.equalsIgnoreCase(rs.getString("booking_id"))) {
+                    result = true;
+                } else {
+                    result = false;
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println("SQLException: " + e.getMessage());
+            System.out.println("SQLState: " + e.getSQLState());
+            System.out.println("VendorError: " + e.getErrorCode());
+        }
+        return result;
+    }
+
     public void line() {
         System.out.println(
                 "----------------------------------------------------------------------------------------------------------------------");

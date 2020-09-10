@@ -9,12 +9,12 @@ public class User {
     private String tel;
     private String address;
 
+    
     public static Scanner getScanner() {
         return new Scanner(System.in);
     }
 
     public String getEmail() {
-        System.out.print("\n- Email: ");
         return email = getScanner().nextLine();
     }
 
@@ -23,7 +23,6 @@ public class User {
     }
 
     public String getPass() {
-        System.out.print("\n- Password: ");
         return pass = getScanner().nextLine();
     }
 
@@ -32,7 +31,6 @@ public class User {
     }
 
     public String getName() {
-        System.out.print("\n- Name: ");
         return name = getScanner().nextLine();
     }
 
@@ -41,7 +39,6 @@ public class User {
     }
 
     public String getTel() {
-        System.out.print("\n- Tel: ");
         return tel = getScanner().nextLine();
     }
 
@@ -50,11 +47,35 @@ public class User {
     }
 
     public String getAddress() {
-        System.out.print("\n- Address: ");
         return address = getScanner().nextLine();
     }
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public static String emailLogin(String email) {
+        String user_email = email;
+        return user_email;
+    }
+
+    public static String passLogin(String pass) {
+        String user_pass = pass;
+        return user_pass;
+    }
+
+    public static String userName(String name) {
+        String userName = name;
+        return userName;
+    }
+
+    public static String userTel(String tel) {
+        String userTel = tel;
+        return userTel;
+    }
+
+    public static String userAddress(String address) {
+        String userAddress = address;
+        return userAddress;
     }
 }

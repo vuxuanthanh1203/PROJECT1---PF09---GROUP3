@@ -28,4 +28,21 @@ public class FlightBL {
     public void delFlight() {
         fdal.delFlight();
     }
+
+    
+    public boolean checkFlight(String f_no) {
+        return FlightDAL.checkFlight(f_no);
+    }
+
+    public boolean checkSearch(String start, String des) {
+        return FlightDAL.checkPlace(start, des);
+    }
+
+    public boolean checkDateValidate(String date) {
+        return FlightDAL.isDateValid(date);
+    }
+
+    public boolean checkTimeValidate(String time) {
+        return FlightDAL.isTimeValid(time);
+    }
 }
