@@ -1,23 +1,24 @@
 CREATE DATABASE project;
 USE project;
-CREATE TABLE customers(
-	cus_id INT AUTO_INCREMENT,
-    cus_email VARCHAR(255) NOT NULL,
-    cus_pass VARCHAR(225) NOT NULL,
-    cus_name VARCHAR(255) NOT NULL,
-    cus_tel VARCHAR(10) NOT NULL,
-    cus_address VARCHAR(255) NOT NULL,
-    PRIMARY KEY(cus_id)
+CREATE TABLE users(
+	user_id INT AUTO_INCREMENT,
+    user_email VARCHAR(255) NOT NULL,
+    user_pass VARCHAR(225) NOT NULL,
+    user_name VARCHAR(255) NOT NULL,
+    user_tel VARCHAR(10) NOT NULL,
+    user_address VARCHAR(255) NOT NULL,
+    roll INT,
+    PRIMARY KEY(user_id)
 );
-CREATE TABLE admins(
-	ad_id INT AUTO_INCREMENT,
-    ad_email VARCHAR(255) NOT NULL,
-    ad_pass VARCHAR(225) NOT NULL,
-	ad_name VARCHAR(255) NOT NULL,
-    ad_tel VARCHAR(10) NOT NULL,
-    ad_address VARCHAR(255) NOT NULL,
-    PRIMARY KEY(ad_id)
-);
+-- CREATE TABLE admins(
+-- 	ad_id INT AUTO_INCREMENT,
+--     ad_email VARCHAR(255) NOT NULL,
+--     ad_pass VARCHAR(225) NOT NULL,
+-- 	ad_name VARCHAR(255) NOT NULL,
+--     ad_tel VARCHAR(10) NOT NULL,
+--     ad_address VARCHAR(255) NOT NULL,
+--     PRIMARY KEY(ad_id)
+-- );
 
 CREATE TABLE ticketType(
 	type_id INT AUTO_INCREMENT NOT NULL,
@@ -35,9 +36,9 @@ CREATE TABLE flights(
     destination VARCHAR(255) NOT NULL,
     takeoff_time TIME,
     landing_time TIME,
-    ad_id INT,
+    user_id INT,
     PRIMARY KEY(flight_id),
-    FOREIGN KEY(ad_id) REFERENCES admins(ad_id)
+    FOREIGN KEY(user_id) REFERENCES users(user_id)
 );
 
 CREATE TABLE ticket(
@@ -51,56 +52,61 @@ CREATE TABLE booking(
 	booking_id INT AUTO_INCREMENT,
     flight_id INT,
     type_id INT,
-    cus_id INT,
+    user_id INT,
     booking_date DATETIME,
     quantity INT, 
     total_price INT,
     PRIMARY KEY(booking_id),
     FOREIGN KEY(flight_id) REFERENCES flights(flight_id),
     FOREIGN KEY(type_id) REFERENCES ticketType(type_id),
-    FOREIGN KEY(cus_id) REFERENCES customers(cus_id)
+    FOREIGN KEY(user_id) REFERENCES users(user_id)
 );
 
 /* Insert customer */
-INSERT INTO customers VALUES
-(null, 'dna@gmail.com', '1234', 'Duong Nhat Anh', '0987654321', 'Bình Thạnh, TP.Hồ Chí Minh' ),
-(null, 'pta@gmail.com', '1234', 'Pham Trung Anh', '0987654321', 'Yên Thành, Nghệ An' ),
-(null, 'nvd@gmail.com', '1234', 'Nguyen Van Dat', '0987654321', 'Quỳnh Lưu, Nghệ An' ),
-(null, 'nmd@gmail.com', '1234', 'Nghiem Minh Duc', '0987654321', 'Bố Trạch, Quảng Bình' ),
-(null, 'tvd@gmail.com', '1234', 'Trinh Van Duc', '0987654321', 'Mê Linh, Hà Nội' ),
-(null, 'vhd@gmail.com', '1234', 'Vu Hai Duong', '0987654321', 'Cẩm Xuyên, Hà Tĩnh' ),
-(null, 'pdh@gmail.com', '1234', 'Phan Duc Hai', '0987654321', 'Thảo Điền, Quận 2, TP.Hồ Chí Minh'),
-(null, 'pgh@gmail.com', '1234', 'Phung Gia Hau', '0987654321', 'Lục Nam, Bắc Giang' ),
-(null, 'bth@gmail.com', '1234', 'Bui Trong Hieu', '0987654321', 'Tam Dương, Vĩnh Phúc'),
-(null, 'pth@gmail.com', '1234', 'Pham Trung Hieu', '0987654321', 'Thạch Hà, Hà Tĩnh'),
-(null, 'nmh@gmail.com', '1234', 'Nguyen Minh Hoang', '0987654321', 'Buôn Đôn, Đăk Lăk'),
-(null, 'nth@gmail.com', '1234', 'Nguyen Thu Huyen', '0987654321', 'Diễn Châu, Nghệ An'),
-(null, 'dtk@gmail.com', '1234', 'Dam Trung Kien', '0987654321', 'Bà Rịa, Vũng Tàu'),
-(null, 'ntl@gmail.com', '1234', 'Nguyen Trong Lam', '0987654321', 'Na Rì, tỉnh Bắc Kạn'),
-(null, 'pdn@gmail.com', '1234', 'Pham Duy Nghia', '0987654321', 'An Dương, Hải Phòng'),
-(null, 'nhn@gmail.com', '1234', 'Nguyen Hong Nhung', '0987654321', 'Hải Hậu, Nam Định'),
-(null, 'dbq@gmail.com', '1234', 'Dang Ba Quang', '0987654321', 'Long Biên, Hà Nội'),
-(null, 'ddt@gmail.com', '1234', 'Dao Duy Thang ', '0987654321', 'Phú Xá, Thái Nguyên'),
-(null, 'vxt@gmail.com', '1234', 'Vu Xuan Thanh', '0987654321', 'Quỳnh Phụ, Thái Bình'),
-(null, 'lmt@gmail.com', '1234', 'Luong Manh Tinh ', '0987654321', 'Thanh Oai, Hà Nội'),
-(null, 'tqt@gmail.com', '1234', 'Tran Quoc Toan', '0987654321', 'Hưng Hà, Thái Bình'),
-(null, 'nbt@gmail.com', '1234', 'Nguyen Ba Tuan', '0987654321', 'Đống Đa, Hà Nội'),
-(null, 'ndt@gmail.com', '1234', 'Nguyen Duong Tung', '0987654321', 'Can Lộc, Hà Tĩnh'),
-(null, 'ntt@gmail.com', '1234', 'Nguyen Thanh Tung', '0987654321', 'Long Biên, Hà Nội'),
-(null, 'ltm@gmail.com', '1234', 'Le Thanh Mai', '0987654321', 'Nông Cống, Thanh Hóa'),
-(null, 'dta@gmail.com', '1234', 'Dang Tuan Anh', '0987654321', 'Mỹ Đức, Hà Nội'),
-(null, 'nla@gmail.com', '1234', 'Nguyen Lan Anh', '0987654321', 'Tây Hồ, Hà Nội'),
-(null, 'pta@gmail.com', '1234', 'Pham Tuan Anh', '0987654321', 'Đông La, Hoài Đức'),
-(null, 'tnb@gmail.com', '1234', 'Trinh Ngoc Bao', '0987654321', 'Phúc Yên, Vĩnh Phúc');
+INSERT INTO users VALUES
+(null, 'dna@gmail.com', '81dc9bdb52d04dc20036dbd8313ed055', 'Duong Nhat Anh', '0987654321', 'Bình Thạnh, TP.Hồ Chí Minh', '2'),
+(null, 'pta@gmail.com', '81dc9bdb52d04dc20036dbd8313ed055', 'Pham Trung Anh', '0987654321', 'Yên Thành, Nghệ An', '2'),
+(null, 'nvd@gmail.com', '81dc9bdb52d04dc20036dbd8313ed055', 'Nguyen Van Dat', '0987654321', 'Quỳnh Lưu, Nghệ An', '2'),
+(null, 'nmd@gmail.com', '81dc9bdb52d04dc20036dbd8313ed055', 'Nghiem Minh Duc', '0987654321', 'Bố Trạch, Quảng Bình', '2'),
+(null, 'tvd@gmail.com', '81dc9bdb52d04dc20036dbd8313ed055', 'Trinh Van Duc', '0987654321', 'Mê Linh, Hà Nội', '2'),
+(null, 'vhd@gmail.com', '81dc9bdb52d04dc20036dbd8313ed055', 'Vu Hai Duong', '0987654321', 'Cẩm Xuyên, Hà Tĩnh', '2'),
+(null, 'pdh@gmail.com', '81dc9bdb52d04dc20036dbd8313ed055', 'Phan Duc Hai', '0987654321', 'Thảo Điền, Quận 2, TP.Hồ Chí Minh', '2'),
+(null, 'pgh@gmail.com', '81dc9bdb52d04dc20036dbd8313ed055', 'Phung Gia Hau', '0987654321', 'Lục Nam, Bắc Giang', '2'),
+(null, 'bth@gmail.com', '81dc9bdb52d04dc20036dbd8313ed055', 'Bui Trong Hieu', '0987654321', 'Tam Dương, Vĩnh Phúc', '2'),
+(null, 'pth@gmail.com', '81dc9bdb52d04dc20036dbd8313ed055', 'Pham Trung Hieu', '0987654321', 'Thạch Hà, Hà Tĩnh', '2'),
+(null, 'nmh@gmail.com', '81dc9bdb52d04dc20036dbd8313ed055', 'Nguyen Minh Hoang', '0987654321', 'Buôn Đôn, Đăk Lăk', '2'),
+(null, 'nth@gmail.com', '81dc9bdb52d04dc20036dbd8313ed055', 'Nguyen Thu Huyen', '0987654321', 'Diễn Châu, Nghệ An', '2'),
+(null, 'dtk@gmail.com', '81dc9bdb52d04dc20036dbd8313ed055', 'Dam Trung Kien', '0987654321', 'Bà Rịa, Vũng Tàu', '2'),
+(null, 'ntl@gmail.com', '81dc9bdb52d04dc20036dbd8313ed055', 'Nguyen Trong Lam', '0987654321', 'Na Rì, tỉnh Bắc Kạn', '2'),
+(null, 'pdn@gmail.com', '81dc9bdb52d04dc20036dbd8313ed055', 'Pham Duy Nghia', '0987654321', 'An Dương, Hải Phòng', '2'),
+(null, 'nhn@gmail.com', '81dc9bdb52d04dc20036dbd8313ed055', 'Nguyen Hong Nhung', '0987654321', 'Hải Hậu, Nam Định', '2'),
+(null, 'dbq@gmail.com', '81dc9bdb52d04dc20036dbd8313ed055', 'Dang Ba Quang', '0987654321', 'Long Biên, Hà Nội', '2'),
+(null, 'ddt@gmail.com', '81dc9bdb52d04dc20036dbd8313ed055', 'Dao Duy Thang ', '0987654321', 'Phú Xá, Thái Nguyên', '2'),
+(null, 'vxt@gmail.com', '81dc9bdb52d04dc20036dbd8313ed055', 'Vu Xuan Thanh', '0987654321', 'Quỳnh Phụ, Thái Bình', '2'),
+(null, 'lmt@gmail.com', '81dc9bdb52d04dc20036dbd8313ed055', 'Luong Manh Tinh ', '0987654321', 'Thanh Oai, Hà Nội', '2'),
+(null, 'tqt@gmail.com', '81dc9bdb52d04dc20036dbd8313ed055', 'Tran Quoc Toan', '0987654321', 'Hưng Hà, Thái Bình', '2'),
+(null, 'nbt@gmail.com', '81dc9bdb52d04dc20036dbd8313ed055', 'Nguyen Ba Tuan', '0987654321', 'Đống Đa, Hà Nội', '2'),
+(null, 'ndt@gmail.com', '81dc9bdb52d04dc20036dbd8313ed055', 'Nguyen Duong Tung', '0987654321', 'Can Lộc, Hà Tĩnh', '2'),
+(null, 'ntt@gmail.com', '81dc9bdb52d04dc20036dbd8313ed055', 'Nguyen Thanh Tung', '0987654321', 'Long Biên, Hà Nội', '2'),
+(null, 'ltm@gmail.com', '81dc9bdb52d04dc20036dbd8313ed055', 'Le Thanh Mai', '0987654321', 'Nông Cống, Thanh Hóa', '2'),
+(null, 'dta@gmail.com', '81dc9bdb52d04dc20036dbd8313ed055', 'Dang Tuan Anh', '0987654321', 'Mỹ Đức, Hà Nội', '2'),
+(null, 'nla@gmail.com', '81dc9bdb52d04dc20036dbd8313ed055', 'Nguyen Lan Anh', '0987654321', 'Tây Hồ, Hà Nội', '2'),
+(null, 'pta@gmail.com', '81dc9bdb52d04dc20036dbd8313ed055', 'Pham Tuan Anh', '0987654321', 'Đông La, Hoài Đức', '2'),
+(null, 'tnb@gmail.com', '81dc9bdb52d04dc20036dbd8313ed055', 'Trinh Ngoc Bao', '0987654321', 'Phúc Yên, Vĩnh Phúc', '2'),
+(null, 'nhd@gmail.com', '81dc9bdb52d04dc20036dbd8313ed055', 'Nguyen Hong Duc', '0987654321', 'Trung Hòa, Cầu Giấy', '1'),
+(null, 'ttd@gmail.com', '81dc9bdb52d04dc20036dbd8313ed055', 'Tran Thai Duong', '0987654321', 'Mỹ Đức, Hà Nội', '1'),
+(null, 'thanhvx@gmail.com', '81dc9bdb52d04dc20036dbd8313ed055', 'Vu Xuan Thanh', '0987654321', 'Giáp Bát, Hà Nội', '1'),
+(null, 'pdh@gmail.com', '81dc9bdb52d04dc20036dbd8313ed055', 'Pham Duc Huy', '0987654321', 'quận 10, TP. Hồ Chí Minh', '1'),
+(null, 'ntk@gmail.com', '81dc9bdb52d04dc20036dbd8313ed055', 'Nguyen Tran Khanh', '0987654321', 'Long Biên, Hà Nội', '1');
 
 
 /* Insert admins */
-INSERT INTO admins VALUES 
-(null, 'nhd@gmail.com', '1234', 'Nguyen Hong Duc', '0987654321', 'Trung Hòa, Cầu Giấy'),
-(null, 'ttd@gmail.com', '1234', 'Tran Thai Duong', '0987654321', 'Mỹ Đức, Hà Nội'),
-(null, 'thanhvx@gmail.com', '1234', 'Vu Xuan Thanh', '0987654321', 'Giáp Bát, Hà Nội'),
-(null, 'pdh@gmail.com', '1234', 'Pham Duc Huy', '0987654321', 'quận 10, TP. Hồ Chí Minh'),
-(null, 'ntk@gmail.com', '1234', 'Nguyen Tran Khanh', '0987654321', 'Long Biên, Hà Nội');
+-- INSERT INTO admins VALUES 
+-- (null, 'nhd@gmail.com', '1234', 'Nguyen Hong Duc', '0987654321', 'Trung Hòa, Cầu Giấy'),
+-- (null, 'ttd@gmail.com', '1234', 'Tran Thai Duong', '0987654321', 'Mỹ Đức, Hà Nội'),
+-- (null, 'thanhvx@gmail.com', '1234', 'Vu Xuan Thanh', '0987654321', 'Giáp Bát, Hà Nội'),
+-- (null, 'pdh@gmail.com', '1234', 'Pham Duc Huy', '0987654321', 'quận 10, TP. Hồ Chí Minh'),
+-- (null, 'ntk@gmail.com', '1234', 'Nguyen Tran Khanh', '0987654321', 'Long Biên, Hà Nội');
 
 /* Insert flights */
 INSERT INTO flights VALUES 
@@ -136,22 +142,22 @@ INSERT INTO ticketType VALUES
 (null, 'C', '900000');
 
 DELIMITER //
-CREATE PROCEDURE search_cus (IN search INT)
+CREATE PROCEDURE search_user (IN search INT)
 BEGIN
 	SELECT *
-	FROM customers
-    WHERE cus_id = search;
+	FROM users
+    WHERE user_id = search;
 END //
 DELIMITER ;
 
-DELIMITER //
-CREATE PROCEDURE search_ad (IN search INT)
-BEGIN
-	SELECT *
-	FROM admins
-    WHERE ad_id = search;
-END //
-DELIMITER ;
+-- DELIMITER //
+-- CREATE PROCEDURE search_ad (IN search INT)
+-- BEGIN
+-- 	SELECT *
+-- 	FROM admins
+--     WHERE ad_id = search;
+-- END //
+-- DELIMITER ;
 
 DELIMITER //
 CREATE PROCEDURE search_flight (IN search VARCHAR(255))
@@ -170,9 +176,11 @@ CREATE PROCEDURE search (IN startpoint VARCHAR(255), IN des VARCHAR(255))
 BEGIN
 	SELECT f.flight_no, f.flight_date, f.flight_time, f.starting_point, f.destination, f.takeoff_time, f.landing_time
 	FROM flights AS f
-    WHERE starting_point LIKE concat('%', startpoint, '%') AND destination LIKE concat('%', des, '%');
+    -- WHERE starting_point LIKE concat('%', startpoint, '%') AND destination LIKE concat('%', des, '%');
+    WHERE starting_point = startpoint AND destination = des;
 END //
 DELIMITER ;
+--  drop procedure search;
 
 -- call search('ha noi','da nang');
 
@@ -180,42 +188,49 @@ DELIMITER ;
 DELIMITER //
 CREATE PROCEDURE search_ticket (IN book_id INT)
 BEGIN
-	SELECT f.flight_no, f.flight_date, f.flight_time, f.starting_point, f.destination, f.takeoff_time, f.landing_time, c.cus_name, c.cus_email, c.cus_address, tt.type_name, b.booking_id
+	SELECT f.flight_no, f.flight_date, f.flight_time, f.starting_point, f.destination, f.takeoff_time, f.landing_time, u.user_name, u.user_email, u.user_address, tt.type_name, b.booking_id
 	FROM flights AS f INNER JOIN booking AS b ON f.flight_id = b.flight_id
     INNER JOIN ticketType AS tt ON b.type_id = tt.type_id
-    INNER JOIN customers AS c ON b.cus_id = c.cus_is
+    INNER JOIN users AS u ON b.user_id = u.user_id
     WHERE booking_id = book_id;
 END //
 DELIMITER ;
+
 
 /* SEARCH TICKET*/
 DELIMITER //
 CREATE PROCEDURE view_ticket (IN cus_key VARCHAR(255))
 BEGIN
-SELECT b.booking_id, f.flight_no, f.flight_date, f.flight_time, f.starting_point, f.destination, f.takeoff_time, f.landing_time, c.cus_name, c.cus_email, c.cus_address, tt.type_name
+SELECT b.booking_id, f.flight_no, f.flight_date, f.flight_time, f.starting_point, f.destination, f.takeoff_time, f.landing_time, u.user_name, u.user_email, u.user_address, tt.type_name
 FROM flights AS f INNER JOIN booking AS b ON f.flight_id = b.flight_id
 INNER JOIN ticketType AS tt ON b.type_id = tt.type_id
-INNER JOIN customers AS c ON b.cus_id = c.cus_id
-WHERE c.cus_id = cus_key;
+INNER JOIN users AS u ON b.user_id = u.user_id
+WHERE u.user_id = cus_key;
 END //
 DELIMITER ;
+
+-- drop procedure view_ticketID;
 
 /* SEARCH ID TICKET*/
 DELIMITER //
 CREATE PROCEDURE view_ticketID (IN cus_key VARCHAR(255), IN tID VARCHAR(255))
 BEGIN
-SELECT b.booking_id, f.flight_no, f.flight_date, f.flight_time, f.starting_point, f.destination, f.takeoff_time, f.landing_time, c.cus_name, c.cus_email, c.cus_address, tt.type_name
+SELECT b.booking_id, f.flight_no, f.flight_date, f.flight_time, f.starting_point, f.destination, f.takeoff_time, f.landing_time, u.user_name, u.user_email, u.user_address, tt.type_name
 FROM flights AS f INNER JOIN booking AS b ON f.flight_id = b.flight_id
 INNER JOIN ticketType AS tt ON b.type_id = tt.type_id
-INNER JOIN customers AS c ON b.cus_id = c.cus_id
-WHERE c.cus_id = cus_key AND b.booking_id = tID;
+INNER JOIN users AS u ON b.user_id = u.user_id
+WHERE u.user_id = cus_key AND b.booking_id = tID;
 END //
 DELIMITER ;
+
+
+
+
 
 -- select * from flights where flight_no = 'vn 231';
 
 -- call view_ticketID('vxt@gmail.com','2');
 -- drop procedure view_ticketID;
--- select * from booking;
--- select * from customers where cus_email = 'vxt@gmail.com';
+-- select * from users;
+-- select * from users where user_email = 'ttt@gmail.com';
 -- DROP DATABASE project;
